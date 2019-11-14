@@ -14,16 +14,17 @@ namespace ConsoleApp1
         static void Main(string[] args)
         {
             const string PLANETS = "planets/";
-           
+
             const string FILMS = "films/";
             JObject p = CallRestMethod(new Uri(BASE_URL + PLANETS));
             JObject f = CallRestMethod(new Uri(BASE_URL + FILMS));
+
             while (true)
             {
                 printAll(p.GetValue("results"), f.GetValue("results"));
                 if (!string.IsNullOrEmpty(p.GetValue("next").ToString()))
                 {
-                p = CallRestMethod(new Uri(p.GetValue("next").ToString()));
+                    p = CallRestMethod(new Uri(p.GetValue("next").ToString()));
                 }
                 else
                 {
@@ -31,18 +32,20 @@ namespace ConsoleApp1
                 }
             }
         }
-        static void printAll(JToken planets,JToken films)
+        static void printAll(JToken planets, JToken films)
         {
-            foreach(var p in planets)
+            foreach (var p in planets)
             {
-                Console.WriteLine("=============================\nPlanets:\n"+p["name"]+"\n\nMovies:\n");
-                foreach(var f in p["films"])
+                Console.WriteLine("=============================\nPlanets:\n" + p["name"] + "\n\nMovies:\n");
+                foreach (var f in p["films"])
                 {
-                    var s =parseInt(f.ToString().Split("/")[5])-1;
+                    var s = parseInt(f.ToString().Split("/")[5]) - 1;
                     Console.WriteLine(films[s]["title"]);
+                    Console.WriteLine(f);
+                    Console.WriteLine(s);
                 }
                 Console.WriteLine();
-            }   
+            }
         }
         static int parseInt(string s)
         {
